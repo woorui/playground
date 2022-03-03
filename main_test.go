@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"sync"
 	"testing"
 	"time"
@@ -44,7 +43,7 @@ func TestGORM(t *testing.T) {
 
 	var cacheUser User
 
-	ok, val, _ := mdb.Get(context.TODO(), "SELECT * FROM `users` WHERE name=\"jz\" AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1")
+	ok, val, _ := mdb.Get(context.TODO(), "SELECT * FROM `users` WHERE name='jz' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1")
 
 	assert.Equal(t, true, ok)
 
@@ -104,7 +103,6 @@ func (kv *mdb) Get(ctx context.Context, key string) (bool, string, error) {
 }
 
 func (kv *mdb) Set(ctx context.Context, key string, value string, exp time.Duration) error {
-	fmt.Println("xxxx", key, value)
 	kv.data.Store(key, value)
 	kv.expires.Store(key, time.Now().Add(exp))
 	return nil
